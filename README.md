@@ -1,4 +1,4 @@
-# yt-dlp-wrapper.sh
+# "Get Best Stream" yt-dlp and ffmpeg wrapper for xteve and threadfin
 
 When using proxy mode in xteve and threadfin, ffmpeg effectively pulls all streams available in the manifest. This is not optimal, as typically only one stream is viewed by the client. This also creates delays in starting the stream by various clients, particularly in streams with multiple different quality video and audio streams.
 
