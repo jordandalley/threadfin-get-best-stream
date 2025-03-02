@@ -8,4 +8,4 @@ When using docker, you'll need to download a yt-dlp binary and include it into y
 
 To add the script to xteve/threadfin, the following config can be used. This script also supports http proxies if using those settings in threadfin.
 
-![image](https://github.com/user-attachments/assets/8a848442-174b-4519-97fd-33be363bcdfe)
+![image](https://github.com/user-attachments/assets/a664adad-1c65-4bd8-a711-b916a84b581a)
