@@ -56,43 +56,43 @@ run_command() {
 }
 
 check_cache() {
-  if [[ -z "$input" || -z "$user_agent" ]]; then
-    echo "Error: Missing required arguments."
-    usage
-  fi
 
-  if [ $cache == "true" ]; then
+  if [ "$cache" == "true" ]; then
     # check if cache dir exists, and if not, create it
     mkdir -p "${cache_dir}"
+
+    # expire cache elements older than specified cache_max time in days
+    find "$cache_dir" -name "ffcmd-*" -mtime +"$cache_max" -exec rm -f {} +
 
     # create an md5 encoded string with the master input url
     input_md5=$(echo -n "$input" | md5sum | cut -d ' ' -f1)
     # create full path for file in cache
     cache_file="$cache_dir/ffcmd-$input_md5"
 
-    # expire cache elements older than specified cache_max time in days
-    find "$cache_dir" -name "ffcmd-*" -mtime +"$cache_max" -exec rm -f {} +
-
-    # check if cache file still exists after expiry check
+    # check if cache file still exists after expiring old cache objects
     if [ -f "$cache_file" ]; then
       # pull command from the cache
       ffmpeg_command=$(< "$cache_file")
-      # run the run_command function
-      run_command
+      # check the ffmpeg command for only the first instance of 'exp=[0-9]{10}' which is an expiry timestamp. These are common in akamai streams.
+      if [[ $ffmpeg_command =~ exp=([0-9]{10}) ]]; then
+        # if there is a expiry string in the command, then extract it and check if it is expired
+        if [[ ${BASH_REMATCH[1]} -lt $(date +%s) ]]; then
+          # timestamp is expired, generate a new command and update cache file (this updated modified time for further cache checking)
+          ffmpeg_command=$(construct_command)
+          echo "$ffmpeg_command" > "$cache_file"
+        fi
+      fi
     else
       # create the ffmpeg_command variable
       ffmpeg_command=$(construct_command)
       # create a cache file
       echo "$ffmpeg_command" > "$cache_file"
-      # run the run_command function
-      run_command
     fi
   else
     # caching is not enabled, just construct the command
     ffmpeg_command=$(construct_command)
-    # run the run_command function
-    run_command
   fi
+  run_command
 }
 
 usage() {
@@ -148,5 +148,10 @@ while [[ $# -gt 0 ]]; do
       ;;
   esac
 done
+
+if [[ -z "$input" || -z "$user_agent" ]]; then
+  echo "Error: Missing required arguments."
+  usage
+fi
 
 check_cache
