@@ -27,7 +27,7 @@ construct_command() {
   constructInputs=$(echo "$getUrls" | awk -v ua="$user_agent" -v proxy="$ffmpeg_proxy" '{printf "%s -user_agent \"%s\" -i \"%s\" ", proxy, ua, $0}')
 
   # construct the ffmpeg command for output to stdout
-  echo "$ffmpeg_path -y -hide_banner -loglevel quiet -threads auto -re -analyzeduration 10000000 -probesize 10M -fflags +discardcorrupt+genpts $constructInputs -c copy -f mpegts -reconnect 1 -reconnect_streamed 1 -reconnect_on_network_error 1 -reconnect_delay_max 2 -reconnect_at_eof 1 pipe:1"
+  echo "$ffmpeg_path -y -hide_banner -loglevel quiet -threads auto -re -analyzeduration 3000000 -probesize 10M -fflags +discardcorrupt+genpts $constructInputs -c copy -f mpegts pipe:1"
 }
 
 run_command() {
@@ -35,28 +35,20 @@ run_command() {
   eval "$ffmpeg_command"
   # set the error code to exit_code variable
   exit_code=$?
-  # check exit code for errors and if exit code is more than 0, delete cache file and try again
-  if [[ $exit_code -gt 0 ]]; then
-    for i in {1..5}; do
-      # if caching enabled, skip cache any maintenance
-      if [[ $cache == "true" ]]; then
-        rm -f "$cache_file"
-        check_cache
-      fi
-      eval "$ffmpeg_command"
-      exit_code=$?
-      # if ffmpeg exits with code 0, its successful, exit with code 0
-      if [[ $exit_code -eq 0 ]]; then
-        return 0
-      fi
-    done
-    # exhausted all options, exit with code 1
+  # check for exit code 1, delete cache file and try again
+  if [[ $exit_code -eq 1 ]]; then
+    # if caching enabled, skip cache any maintenance
+    if [[ $cache == "true" ]]; then
+      # purge any cache items on failure, just in case
+      rm -f "$cache_file"
+      return 1
+    fi
     return 1
   fi
+  return 0
 }
 
 check_cache() {
-
   if [ "$cache" == "true" ]; then
     # check if cache dir exists, and if not, create it
     mkdir -p "${cache_dir}"
