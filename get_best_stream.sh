@@ -27,24 +27,36 @@ construct_command() {
   constructInputs=$(echo "$getUrls" | awk -v ua="$user_agent" -v proxy="$ffmpeg_proxy" '{printf "%s -user_agent \"%s\" -i \"%s\" ", proxy, ua, $0}')
 
   # construct the ffmpeg command for output to stdout
-  echo "$ffmpeg_path -y -hide_banner -loglevel quiet -threads auto -re -analyzeduration 3000000 -probesize 10M -fflags +discardcorrupt+genpts $constructInputs -c copy -f mpegts pipe:1"
+  echo "$ffmpeg_path -y -hide_banner -loglevel quiet -threads auto -re -analyzeduration 3000000 -probesize 10M -fflags +discardcorrupt+genpts $constructInputs -c copy -async 1 -f mpegts pipe:1"
 }
 
 run_command() {
-  # run the ffmpeg commamd
+  # Run the ffmpeg command
   eval "$ffmpeg_command"
-  # set the error code to exit_code variable
+  # Capture the exit code of the ffmpeg command
   exit_code=$?
-  # check for exit code 1, delete cache file and try again
+
+  # If the exit code is 1 (indicating failure)
   if [[ $exit_code -eq 1 ]]; then
-    # if caching enabled, skip cache any maintenance
+    # Check if caching is enabled
     if [[ $cache == "true" ]]; then
-      # purge any cache items on failure, just in case
+      # If caching is enabled, purge the cache entry
       rm -f "$cache_file"
-      return 1
+      # Regenerate a new ffmpeg command
+      ffmpeg_command=$(construct_command)
+      # Run the command again
+      eval "$ffmpeg_command"
+      # Capture the new exit code
+      exit_code=$?
+      # If the second attempt fails, return 1 (indicating failure)
+      if [[ $exit_code -eq 1 ]]; then
+        return 1
+      fi
     fi
+    # If caching is not enabled or the second attempt fails, return 1
     return 1
   fi
+  # Return 0 if the command was successful
   return 0
 }
 
@@ -75,10 +87,13 @@ check_cache() {
         fi
       fi
     else
-      # create the ffmpeg_command variable
+      # no cache file exists, create a cache file under certain conditions
       ffmpeg_command=$(construct_command)
-      # create a cache file
-      echo "$ffmpeg_command" > "$cache_file"
+      # check if "dai.google.com" exists in the command. these urls cannot be cached
+      if [[ "$ffmpeg_command" != *"dai.google.com"* ]]; then
+        # google dai url not detected, cache the command
+        echo "$ffmpeg_command" > "$cache_file"
+      fi
     fi
   else
     # caching is not enabled, just construct the command
