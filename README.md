@@ -6,7 +6,7 @@ This script is a wrapper for threadfin that optimises the retrieval of highest q
 
 When using ffmpeg in proxy mode in threadfin, ffmpeg ignores individual stream quality information in the m3u8 manifest and probes all streams to determine which is the highest resolution and quality. This is time consuming and not optimal when the m3u8 manifest contains all the relevant information necessary to determine the best stream.
 
-This script passes tne requested stream url to 'yt-dlp' first, which parses the m3u8 manifest for the highest quality stream (or streams if audio and video separate), builds a special ffmpeg command which feeds the highest quality stream directly to it, and caches the command (where appropriate) for subsequent streams.
+This script passes tne requested stream url to 'yt-dlp' first, which parses the m3u8 manifest for the highest quality stream (or streams if audio and video separate), builds a special ffmpeg command which feeds the highest quality stream directly to it, and caches the command (when appropriate) for subsequent streams.
 
 ## Installation
 
