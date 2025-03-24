@@ -66,4 +66,4 @@ If you edit the 'get_best_stream.sh' wrapper, you will see a number of options t
 
 If you have modified the ffmpeg command in the script in any way, you will need to purge the cache before your changes become effective.
 
-Find the cache directory by the 'cache_dir' variable in the top of the script, then run the following (assuming the default): ```docker exec -it threadfin rm /home/threadfin/conf/ffmpeg-wrapper/cache/*.log -f```
+Find the cache directory by the 'cache_dir' variable in the top of the script, then run the following (assuming the default): ```docker exec -it threadfin rm /home/threadfin/conf/ffmpeg-wrapper/cache/*.cfl -f```
