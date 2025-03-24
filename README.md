@@ -36,19 +36,19 @@ services:
 ```
 
 5. Run ```docker compose up -d``` to refresh the configuration and restart the threadfin docker container
-6. Copy the [get_best_stream.sh](get_best_stream.sh) file to your persistent config directory for threadfin
-7. Set the script to executable: ```chmod +x get_best_stream.sh```
+6. Copy the [ffmpeg-wrapper.sh](ffmpeg-wrapper.sh) file to your persistent config directory for threadfin
+7. Set the script to executable: ```chmod +x ffmpeg-wrapper.sh```
 8. Open the threadfin interface and navigate to 'Settings'
 9. Configure a user agent. I use ```Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36``` to emulate Chrome on Windows.
-10. Change the ffmpeg binary path to ```/home/threadfin/conf/get_best_stream.sh``` (or wherever you decided to place the binary)
+10. Change the ffmpeg binary path to ```/home/threadfin/conf/ffmpeg-wrapper.sh``` (or wherever you decided to place the binary)
 11. You can leave the 'FFmpeg Options' field as is. The only options that the wrapper script uses are the input url, the proxy (if enabled) and user agent. All that is required to pass to the script is the following: ```-i [URL]```
 12. Save your configuration, then enable 'ffmpeg' proxy mode for any of your m3u8 playlists.
 
-![image](https://github.com/user-attachments/assets/a664adad-1c65-4bd8-a711-b916a84b581a)
+![image](https://github.com/user-attachments/assets/3db52441-e59e-4312-8432-4dee424dd540)
 
 ## Script options
 
-If you edit the 'get_best_stream.sh' wrapper, you will see a number of options that can be configured. The defaults will work fine in most instances.
+If you edit the 'ffmpeg-wrapper.sh' wrapper, you will see a number of options that can be configured. The defaults will work fine in most instances.
 
 | Variable | Type | Description | Default |
 | --- | --- | --- | --- | 
