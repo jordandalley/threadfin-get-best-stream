@@ -52,9 +52,13 @@ If you edit the 'get_best_stream.sh' wrapper, you will see a number of options t
 
 | Variable | Type | Description | Default |
 | --- | --- | --- | --- | 
-| cache | boolean | Enables or disables caching of predetermined optimised ffmpeg commands. Disable this if facing issues with loading some streams. | true |
-| cache_dir | string | Specifies the path in which to store the 'ffcmd-*' cache files | "/home/threadfin/conf/cache" |
+| cache | boolean | Enables or disables caching of predetermined optimised ffmpeg commands. Disable this if facing issues with loading some streams | true |
+| cache_dir | string | Specifies the path in which to store the 'ffcmd-*' cache files | "/home/threadfin/conf/ffmpeg-wrapper/cache" |
 | cache_max | integer | Specifies the maximum amount of time, in days, that a cache file should remain valid | 30 |
+| logging | boolean | Enables or disables logging of wrapper script processes and ffmpeg output | true |
+| log_retention | integer | Specifies the maximum amount of days that log files should be retained for | 2 |
+| cache_dir | string | Specifies the path in which to store the '*.cfl' cache files | "/home/threadfin/conf/ffmpeg-wrapper/log" |
+| ffmpeg_loglevel="info" | string | Specifies the verbosity of ffmpeg logging, if logging is enabled: Valid options include: quiet, info, verbose, and debug | info |
 | yt_dlp_path | string | Specifies the path to the yt-dlp binary. The default checks $PATH for the command | $(command -v yt-dlp) |
 | ffmpeg_path | string | Specifies the path to the ffmpeg binary. The default checks $PATH for the command | $(command -v ffmpeg) |
 
@@ -62,4 +66,4 @@ If you edit the 'get_best_stream.sh' wrapper, you will see a number of options t
 
 If you have modified the ffmpeg command in the script in any way, you will need to purge the cache before your changes become effective.
 
-Find the cache directory by the 'cache_dir' variable in the top of the script, then run the following (assuming the default): ```docker exec -it threadfin rm /home/threadfin/conf/cache/ffcmd-* -f```
+Find the cache directory by the 'cache_dir' variable in the top of the script, then run the following (assuming the default): ```docker exec -it threadfin rm /home/threadfin/conf/ffmpeg-wrapper/cache/*.log -f```
