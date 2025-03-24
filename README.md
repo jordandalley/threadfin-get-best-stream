@@ -1,4 +1,4 @@
-# "get_best_stream.sh" wrapper for Threadfin
+# "ffmpeg-wrapper.sh" wrapper for Threadfin
 
 This script is a wrapper for threadfin that optimises the retrieval of highest quality live streams with caching for faster channel switching.
 
