@@ -58,7 +58,7 @@ If you edit the 'ffmpeg-wrapper.sh' wrapper, you will see a number of options th
 | logging | boolean | Enables or disables logging of wrapper script processes and ffmpeg output | true |
 | log_retention | integer | Specifies the maximum amount of days that log files should be retained for | 2 |
 | cache_dir | string | Specifies the path in which to store the '*.cfl' cache files | /home/threadfin/conf/ffmpeg-wrapper/log |
-| ffmpeg_loglevel="info" | string | Specifies the verbosity of ffmpeg logging, if logging is enabled: Valid options include: quiet, info, verbose, and debug | info |
+| ffmpeg_loglevel | string | Specifies the verbosity of ffmpeg logging, if logging is enabled: Valid options include: quiet, info, verbose, and debug | info |
 | yt_dlp_path | string | Specifies the path to the yt-dlp binary. The default checks $PATH for the command | $(command -v yt-dlp) |
 | ffmpeg_path | string | Specifies the path to the ffmpeg binary. The default checks $PATH for the command | $(command -v ffmpeg) |
 
