@@ -1,6 +1,6 @@
-# "ffmpeg-wrapper.sh" wrapper for Threadfin
+# "ffmpeg-wrapper.sh"
 
-This script is a wrapper for threadfin that optimises the retrieval of highest quality live streams with caching for faster channel switching.
+This script is an ffmpeg wrapper for threadfin that optimises the retrieval of highest quality live streams with caching for faster channel switching.
 
 ## Introduction
 
