@@ -42,6 +42,8 @@ start_stream() {
   fi
   log_message "Log Retention: $log_retention days"
   log_message "FFmpeg Log Level: $ffmpeg_loglevel"
+  log_message "Cleaning logs older than $log_retention days"
+  find "$log_dir" -name "*.log" -mtime +"$log_retention" -exec rm -f {} +
   ffmpeg_command=$(construct_command)
   run_command
 }
