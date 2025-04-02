@@ -1,3 +1,9 @@
+########## DEPRECATED ##########
+
+This repository is now archived. I am now focusing on a fork of Threadfin with these optimisations:
+
+[https://github.com/jordandalley/threadfinite](https://github.com/jordandalley/threadfinite)
+
 # ffmpeg-wrapper.sh
 
 This script is an ffmpeg wrapper for threadfin that optimises the retrieval of highest quality live streams for faster channel switching.
